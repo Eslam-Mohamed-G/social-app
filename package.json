@@ -15,9 +15,11 @@
     "@mui/material": "^6.4.6",
     "@mui/material-nextjs": "^6.4.3",
     "@mui/styles": "^6.4.6",
+    "formik": "^2.4.6",
     "next": "15.2.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
