@@ -5,6 +5,8 @@ import Navbar from "./_navbar/page";
 import { ThemeProvider } from '@mui/material/styles';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import theme from "./theme";
+import { Provider } from "react-redux";
+import {store} from "../library/redux/store.js";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +33,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
+            <Provider store={store}>
             <Navbar />
             {children}
+            </Provider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
