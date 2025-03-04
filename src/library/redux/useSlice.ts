@@ -5,7 +5,7 @@ interface UserState {
     email: string;
     password: string;
     rePassword: string;
-    dateOfBirth: number;
+    dateOfBirth: string;
     gender: string
 }
 const initialState: UserState = {
@@ -13,7 +13,7 @@ const initialState: UserState = {
     email: "",
     password: "",
     rePassword: "",
-    dateOfBirth: 0,
+    dateOfBirth: "",
     gender: ""
 }
 const userSlice = createSlice({
