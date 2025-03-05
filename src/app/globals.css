@@ -40,3 +40,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.login-container{
+  padding: 20px;
+}
