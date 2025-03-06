@@ -1,7 +1,21 @@
+"use client"
+import { store } from '@/library/redux/store';
+import { getLogin } from '@/library/redux/userSlice';
 import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { useFormik } from 'formik';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function Login() {
+    let dispatch = useDispatch<typeof store.dispatch>();
+    let initialValues: { email: string, password:string} ={
+        email: '',
+        password: '',
+    }
+    const formik = useFormik({
+        initialValues: initialValues,
+        onSubmit: (values)=>{ dispatch(getLogin(values)) }
+    });
     return (
         <Container maxWidth="md" className='login-container'>
             <Paper elevation={8} sx={{ margin: "auto", textAlign:"end" }}>
@@ -17,12 +31,15 @@ export default function Login() {
                     component="form"
                     sx={{ padding: '20px', paddingTop:"0px" }}
                     noValidate
+                    onSubmit={formik.handleSubmit}
                 >
                     <TextField
                         id="email"
                         name='email'
                         label="Email"
                         variant="outlined"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                         sx={{ width: '100%', marginTop: '15px' }}
                     />
                     <TextField
@@ -30,6 +47,8 @@ export default function Login() {
                         name='password'
                         label="Password"
                         variant="outlined"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
                         sx={{ width: '100%', marginTop: '15px' }}
                     />
                     <Button type='submit' variant="outlined" sx={{ marginTop: "15px" }}>login</Button>
