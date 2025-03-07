@@ -4,6 +4,7 @@ import { getLogin } from '@/library/redux/userSlice';
 import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
 export default function Login() {
@@ -14,7 +15,16 @@ export default function Login() {
     }
     const formik = useFormik({
         initialValues: initialValues,
-        onSubmit: (values)=>{ dispatch(getLogin(values)) }
+        onSubmit: (values)=>{ 
+            dispatch(getLogin(values)).then((resp) =>{
+                console.log('form login', resp?.payload?.response?.data?.error);
+                if(resp?.payload?.data?.message === 'success'){ 
+                    toast.success('Successfully Login!')
+                }else {
+                    toast.error(resp?.payload?.response?.data?.error)
+                }
+            }).catch((error)=>{console.log(error)})
+        }
     });
     return (
         <Container maxWidth="md" className='login-container'>

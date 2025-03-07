@@ -44,6 +44,7 @@ const userSlice = createSlice({
         builder.addCase(getLogin.fulfilled, (state, action) => {
             state.isLoading = false
             state.isError = false
+            state.userToken = action?.payload?.data?.token
         })
         builder.addCase(getLogin.rejected, (state, action) => {
             state.isLoading = false
