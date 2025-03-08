@@ -4,6 +4,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as React from 'react';
 import { useFormik } from 'formik';
+import axios from 'axios';
 
 interface SignupDataType {
   name: string;
@@ -34,6 +35,11 @@ export default function Register() {
     rePassword: '',
     dateOfBirth: '',
     gender: '',
+  };
+
+  async function onSubmit(values:SignupDataType) {
+    const {data} = await axios.post("https://linked-posts.routemisr.com/users/signup", values)
+    console.log(data);
   };
 
   const { handleSubmit, values, handleChange } = useFormik({
@@ -106,10 +112,10 @@ export default function Register() {
           </FormControl>
 
           <FormControl sx={{ width: '100%', marginTop: '15px' }} variant="outlined">
-            <InputLabel htmlFor="repassword">RePassword</InputLabel>
+            <InputLabel htmlFor="rePassword">RePassword</InputLabel>
             <OutlinedInput
-              id="repassword"
-              name='repassword'
+              id="rePassword"
+              name='rePassword'
               value={values.rePassword}
               onChange={handleChange}
               type={showPassword ? 'text' : 'password'}
