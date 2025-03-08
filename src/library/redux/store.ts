@@ -1,4 +1,4 @@
-import userReducer from "./useSlice";
+import userReducer from "./userSlice";
 
 const { configureStore } = require("@reduxjs/toolkit");
 

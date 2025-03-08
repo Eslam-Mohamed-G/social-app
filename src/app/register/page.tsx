@@ -2,9 +2,9 @@
 import { Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Paper, Select, TextField, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from 'axios';
 import * as React from 'react';
 import { useFormik } from 'formik';
-import axios from 'axios';
 
 interface SignupDataType {
   name: string;
@@ -37,12 +37,16 @@ export default function Register() {
     gender: '',
   };
 
-  async function onSubmit(values:SignupDataType) {
-    const {data} = await axios.post("https://linked-posts.routemisr.com/users/signup", values)
-    console.log(data);
+  async function onSubmit(values: SignupDataType) {
+    try {
+      const response = await axios.post("https://linked-posts.routemisr.com/users/signup", values)
+      console.log(response.data);
+    } catch (error) {
+      console.error("Signup failed:", error);
+    }
   };
 
-  const { handleSubmit, values, handleChange } = useFormik({
+  const { handleSubmit, values, handleChange, errors, touched } = useFormik({
     initialValues,
     onSubmit,
   });
@@ -155,7 +159,7 @@ export default function Register() {
           />
 
           {/*   gender   gender   gender   */}
-          <FormControl sx={{ width: '100%', textAlign:"left", marginTop: '15px' }}>
+          <FormControl sx={{ width: '100%', textAlign: "left", marginTop: '15px' }}>
             <InputLabel id="gender-label">Gender</InputLabel>
             <Select
               labelId="gender-label"
