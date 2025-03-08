@@ -5,6 +5,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
 import * as React from 'react';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 interface SignupDataType {
   name: string;
@@ -37,6 +38,15 @@ export default function Register() {
     gender: '',
   };
 
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email format").required("Email is required"),
+    password: Yup.string().required('password is required').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, 'invalid password'),
+    rePassword: Yup.string().required('rePassword is required').oneOf([Yup.ref('password')], 'invalid rePassword'),
+    dateOfBirth: Yup.string().required("Date of birth is required"),
+    gender: Yup.string().required("Gender is required"),
+  });
+
   async function onSubmit(values: SignupDataType) {
     try {
       const response = await axios.post("https://linked-posts.routemisr.com/users/signup", values)
@@ -48,6 +58,7 @@ export default function Register() {
 
   const { handleSubmit, values, handleChange, errors, touched } = useFormik({
     initialValues,
+    validationSchema,
     onSubmit,
   });
   return (
@@ -75,6 +86,8 @@ export default function Register() {
             sx={{ width: '100%', marginTop: '15px' }}
             value={values.name}
             onChange={handleChange}
+            error={touched.name && Boolean(errors.name)}
+            helperText={touched.name && errors.name}
           />
 
           <TextField
@@ -86,6 +99,8 @@ export default function Register() {
             sx={{ width: '100%', marginTop: '15px' }}
             value={values.email}
             onChange={handleChange}
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
           />
 
           <FormControl sx={{ width: '100%', marginTop: '15px' }} variant="outlined">
@@ -95,6 +110,7 @@ export default function Register() {
               name='password'
               value={values.password}
               onChange={handleChange}
+              error={touched.password && Boolean(errors.password)}
               type={showPassword ? 'text' : 'password'}
               endAdornment={
                 <InputAdornment position="end">
@@ -114,6 +130,9 @@ export default function Register() {
               label="Password"
             />
           </FormControl>
+          {touched.password && errors.password && (
+            <Typography color="error" variant="caption">{errors.password}</Typography>
+          )}
 
           <FormControl sx={{ width: '100%', marginTop: '15px' }} variant="outlined">
             <InputLabel htmlFor="rePassword">RePassword</InputLabel>
@@ -122,6 +141,7 @@ export default function Register() {
               name='rePassword'
               value={values.rePassword}
               onChange={handleChange}
+              error={touched.rePassword && Boolean(errors.rePassword)}
               type={showPassword ? 'text' : 'password'}
               endAdornment={
                 <InputAdornment position="end">
@@ -141,6 +161,9 @@ export default function Register() {
               label="RePassword"
             />
           </FormControl>
+          {touched.rePassword && errors.rePassword && (
+            <Typography color="error" variant="caption">{errors.rePassword}</Typography>
+          )}
 
           <TextField
             id="dateOfBirth"
@@ -156,6 +179,9 @@ export default function Register() {
             sx={{ width: '100%', marginTop: '15px' }}
             value={values.dateOfBirth}
             onChange={handleChange}
+            InputLabelProps={{ shrink: true }}
+            error={touched.dateOfBirth && Boolean(errors.dateOfBirth)}
+            helperText={touched.dateOfBirth && errors.dateOfBirth}
           />
 
           {/*   gender   gender   gender   */}
@@ -168,11 +194,15 @@ export default function Register() {
               label="Gender"
               value={values.gender}
               onChange={handleChange}
+              error={touched.gender && Boolean(errors.gender)}
             >
               <MenuItem value={"male"}>Male</MenuItem>
               <MenuItem value={"female"}>Female</MenuItem>
             </Select>
           </FormControl>
+          {touched.gender && errors.gender && (
+            <Typography color="error" variant="caption">{errors.gender}</Typography>
+          )}
 
           <Button type='submit' variant="outlined" sx={{ marginTop: "15px" }}>Register</Button>
         </Box>
