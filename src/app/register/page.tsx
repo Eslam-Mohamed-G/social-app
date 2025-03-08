@@ -11,7 +11,7 @@ interface SignupDataType {
   password: string;
   rePassword: string;
   dateOfBirth: string;
-  gender: "male" | "female"
+  gender: string;
 }
 
 export default function Register() {
@@ -33,12 +33,12 @@ export default function Register() {
     password: '',
     rePassword: '',
     dateOfBirth: '',
-    gender: 'male',
+    gender: '',
   };
 
-  const { handleSubmit, values} = useFormik({
+  const { handleSubmit, values, handleChange } = useFormik({
     initialValues,
-    onSubmit: () =>{}
+    onSubmit,
   });
   return (
     <Container maxWidth='md' sx={{ padding: "20px" }}>
@@ -63,7 +63,10 @@ export default function Register() {
             label="Name"
             variant="outlined"
             sx={{ width: '100%', marginTop: '15px' }}
+            value={values.name}
+            onChange={handleChange}
           />
+
           <TextField
             id="email"
             name='email'
@@ -71,12 +74,17 @@ export default function Register() {
             label="Email"
             variant="outlined"
             sx={{ width: '100%', marginTop: '15px' }}
+            value={values.email}
+            onChange={handleChange}
           />
+
           <FormControl sx={{ width: '100%', marginTop: '15px' }} variant="outlined">
             <InputLabel htmlFor="password">Password</InputLabel>
             <OutlinedInput
               id="password"
               name='password'
+              value={values.password}
+              onChange={handleChange}
               type={showPassword ? 'text' : 'password'}
               endAdornment={
                 <InputAdornment position="end">
@@ -102,6 +110,8 @@ export default function Register() {
             <OutlinedInput
               id="repassword"
               name='repassword'
+              value={values.rePassword}
+              onChange={handleChange}
               type={showPassword ? 'text' : 'password'}
               endAdornment={
                 <InputAdornment position="end">
@@ -134,19 +144,26 @@ export default function Register() {
             label="Birth Day"
             variant="outlined"
             sx={{ width: '100%', marginTop: '15px' }}
+            value={values.dateOfBirth}
+            onChange={handleChange}
           />
-          <FormControl sx={{ width: '100%', marginTop: '15px' }}>
-            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+
+          {/*   gender   gender   gender   */}
+          <FormControl sx={{ width: '100%', textAlign:"left", marginTop: '15px' }}>
+            <InputLabel id="gender-label">Gender</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="gender-label"
+              id="gender"
               name='gender'
               label="Gender"
+              value={values.gender}
+              onChange={handleChange}
             >
               <MenuItem value={"male"}>Male</MenuItem>
               <MenuItem value={"female"}>Female</MenuItem>
             </Select>
           </FormControl>
+
           <Button type='submit' variant="outlined" sx={{ marginTop: "15px" }}>Register</Button>
         </Box>
       </Paper>
