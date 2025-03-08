@@ -3,14 +3,15 @@ import { Box, Button, Container, FormControl, IconButton, InputAdornment, InputL
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as React from 'react';
+import { useFormik } from 'formik';
 
-interface SignupValues {
+interface SignupDataType {
   name: string;
   email: string;
   password: string;
   rePassword: string;
   dateOfBirth: string;
-  gender: string
+  gender: "male" | "female"
 }
 
 export default function Register() {
@@ -25,14 +26,20 @@ export default function Register() {
   const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-  const initialValues: SignupValues = {
+
+  const initialValues: SignupDataType = {
     name: '',
     email: '',
     password: '',
     rePassword: '',
     dateOfBirth: '',
-    gender: '',
-  }
+    gender: 'male',
+  };
+
+  const { handleSubmit, values} = useFormik({
+    initialValues,
+    onSubmit: () =>{}
+  });
   return (
     <Container maxWidth='md' sx={{ padding: "20px" }}>
       <Paper sx={{ width: '100%', margin: 'auto', textAlign: "end" }} elevation={8}>
@@ -47,6 +54,7 @@ export default function Register() {
         <Box
           component="form"
           sx={{ padding: '20px' }}
+          onSubmit={handleSubmit}
         >
           <TextField
             id="name"
