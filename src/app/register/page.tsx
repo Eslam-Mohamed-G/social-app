@@ -48,13 +48,12 @@ export default function Register() {
     setIsLoading(true);
     try {
       const response = await axios.post("https://linked-posts.routemisr.com/users/signup", values)
-      console.log(response.data);
       if (response.data.message === "success") {
         toast.success('Register Successfully');
         router.push("/login");
       }
     } catch (error) {
-      console.error("Signup failed:", error);
+      toast.error("already exist")
     } finally{
       setIsLoading(false);
     }
