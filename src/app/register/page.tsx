@@ -18,15 +18,8 @@ interface SignupDataType {
 
 export default function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handlePassowrdVisibility = () => {
+    setShowPassword((prev) => !prev)
   };
 
   const initialValues: SignupDataType = {
@@ -118,9 +111,7 @@ export default function Register() {
                     aria-label={
                       showPassword ? 'hide the password' : 'display the password'
                     }
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    onMouseUp={handleMouseUpPassword}
+                    onClick={handlePassowrdVisibility}
                     edge="end"
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -149,9 +140,7 @@ export default function Register() {
                     aria-label={
                       showPassword ? 'hide the password' : 'display the password'
                     }
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    onMouseUp={handleMouseUpPassword}
+                    onClick={handlePassowrdVisibility}
                     edge="end"
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
