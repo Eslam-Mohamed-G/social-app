@@ -6,6 +6,8 @@ import axios from 'axios';
 import * as React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface SignupDataType {
   name: string;
@@ -17,6 +19,7 @@ interface SignupDataType {
 }
 
 export default function Register() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const handlePassowrdVisibility = () => {
     setShowPassword((prev) => !prev)
@@ -44,6 +47,10 @@ export default function Register() {
     try {
       const response = await axios.post("https://linked-posts.routemisr.com/users/signup", values)
       console.log(response.data);
+      if (response.data.message === "success") {
+        toast.success('Register Successfully');
+        router.push("/login");
+      }
     } catch (error) {
       console.error("Signup failed:", error);
     }
