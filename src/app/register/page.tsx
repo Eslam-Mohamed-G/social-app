@@ -21,6 +21,7 @@ interface SignupDataType {
 export default function Register() {
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const handlePassowrdVisibility = () => {
     setShowPassword((prev) => !prev)
   };
@@ -44,6 +45,7 @@ export default function Register() {
   });
 
   async function onSubmit(values: SignupDataType) {
+    setIsLoading(true);
     try {
       const response = await axios.post("https://linked-posts.routemisr.com/users/signup", values)
       console.log(response.data);
@@ -53,6 +55,8 @@ export default function Register() {
       }
     } catch (error) {
       console.error("Signup failed:", error);
+    } finally{
+      setIsLoading(false);
     }
   };
 
@@ -200,7 +204,7 @@ export default function Register() {
             )}
           </FormControl>
 
-          <Button type='submit' variant="outlined" sx={{ marginTop: "15px" }}>Register</Button>
+          <Button loading={isLoading} loadingPosition="end" type='submit' variant="outlined" sx={{ marginTop: "15px" }}>Register</Button>
         </Box>
       </Paper>
     </Container>
