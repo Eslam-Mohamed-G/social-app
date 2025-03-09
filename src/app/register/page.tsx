@@ -41,8 +41,8 @@ export default function Register() {
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email format").required("Email is required"),
-    password: Yup.string().required('password is required').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, 'Password must contain at least 8 characters, uppercase letter, lowercase letter, number, and special symbol.'),
-    rePassword: Yup.string().required('rePassword is required').oneOf([Yup.ref('password')], 'invalid rePassword'),
+    password: Yup.string().required('Password is required').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, 'Password must contain at least 8 characters, uppercase letter, lowercase letter, number, and special symbol.'),
+    rePassword: Yup.string().required('The password must be confirmed').oneOf([Yup.ref('password')], 'Password does not match'),
     dateOfBirth: Yup.string().required("Date of birth is required"),
     gender: Yup.string().required("Gender is required"),
   });
@@ -129,10 +129,10 @@ export default function Register() {
               }
               label="Password"
             />
+            {touched.password && errors.password && (
+              <Typography color="error" variant="caption" sx={{ textAlign: "start", paddingLeft: "15px" }}>{errors.password}</Typography>
+            )}
           </FormControl>
-          {touched.password && errors.password && (
-            <Typography color="error" variant="caption">{errors.password}</Typography>
-          )}
 
           <FormControl sx={{ width: '100%', marginTop: '15px' }} variant="outlined">
             <InputLabel htmlFor="rePassword">RePassword</InputLabel>
@@ -160,10 +160,10 @@ export default function Register() {
               }
               label="RePassword"
             />
+            {touched.rePassword && errors.rePassword && (
+              <Typography color="error" variant="caption" sx={{ textAlign: "start", paddingLeft: "15px" }}>{errors.rePassword}</Typography>
+            )}
           </FormControl>
-          {touched.rePassword && errors.rePassword && (
-            <Typography color="error" variant="caption">{errors.rePassword}</Typography>
-          )}
 
           <TextField
             id="dateOfBirth"
@@ -199,10 +199,10 @@ export default function Register() {
               <MenuItem value={"male"}>Male</MenuItem>
               <MenuItem value={"female"}>Female</MenuItem>
             </Select>
+            {touched.gender && errors.gender && (
+              <Typography color="error" variant="caption" sx={{ textAlign: "start", paddingLeft: "15px" }}>{errors.gender}</Typography>
+            )}
           </FormControl>
-          {touched.gender && errors.gender && (
-            <Typography color="error" variant="caption">{errors.gender}</Typography>
-          )}
 
           <Button type='submit' variant="outlined" sx={{ marginTop: "15px" }}>Register</Button>
         </Box>
