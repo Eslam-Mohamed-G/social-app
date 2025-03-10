@@ -9,15 +9,23 @@ import * as Yup from 'yup';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
+interface LoginDataType {
+    email: string;
+    password: string;
+}
 
 export default function Login() {
+    const router = useRouter();
     const [showPassword, setShowPassword] = React.useState(false);
-    // const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
     const handlePassowrdVisibility = () => {
     setShowPassword((prev) => !prev)
     };
     let dispatch = useDispatch<typeof store.dispatch>();
-    let initialValues: { email: string, password: string } = {
+    let initialValues: LoginDataType = {
         email: '',
         password: '',
     }
@@ -27,19 +35,37 @@ export default function Login() {
         password: Yup.string().required('Password is required').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, 'Password must contain at least 8 characters, uppercase letter, lowercase letter, number, and special symbol.'),
     });
 
+    async function onSubmit(values: LoginDataType) {
+        setIsLoading(true);
+        try {
+            const response = await axios.post("https://linked-posts.routemisr.com/users/signin", values);
+            console.log(response);
+            if(response?.data?.message === "success") {
+                router.push("/")
+            } else {
+                toast.error(response?.data?.error)
+            }
+        } catch (error) {
+
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema,
-        onSubmit: (values) => {
-            dispatch(getLogin(values)).then((resp) => {
-                console.log('form login', resp?.payload?.response?.data?.error);
-                if (resp?.payload?.data?.message === 'success') {
-                    toast.success('Successfully Login!')
-                } else {
-                    toast.error(resp?.payload?.response?.data?.error)
-                }
-            }).catch((error) => { console.log(error) })
-        }
+        onSubmit,
+        // onSubmit: (values) => {
+        //     dispatch(getLogin(values)).then((resp) => {
+        //         console.log('form login', resp?.payload?.response?.data?.error);
+        //         if (resp?.payload?.data?.message === 'success') {
+        //             toast.success('Successfully Login!')
+        //         } else {
+        //             toast.error(resp?.payload?.response?.data?.error)
+        //         }
+        //     }).catch((error) => { console.log(error) })
+        // }
     });
     return (
         <Container maxWidth="md" className='login-container'>
@@ -98,7 +124,7 @@ export default function Login() {
                             <Typography color="error" variant="caption" sx={{ textAlign: "start", paddingLeft: "15px" }}>{formik.errors.password}</Typography>
                         )}
                     </FormControl>
-                    <Button type='submit' variant="outlined" sx={{ marginTop: "15px" }}>login</Button>
+                    <Button loading={isLoading} loadingPosition="end" type='submit' variant="outlined" sx={{ marginTop: "15px" }}>login</Button>
                 </Box>
             </Paper>
         </Container>
