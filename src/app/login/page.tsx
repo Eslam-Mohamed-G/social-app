@@ -1,7 +1,9 @@
 "use client"
 import { store } from '@/library/redux/store';
 import { getLogin } from '@/library/redux/userSlice';
-import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import React from 'react';
@@ -9,8 +11,13 @@ import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
 export default function Login() {
+    const [showPassword, setShowPassword] = React.useState(false);
+    // const [isLoading, setIsLoading] = React.useState(false);
+    const handlePassowrdVisibility = () => {
+    setShowPassword((prev) => !prev)
+    };
     let dispatch = useDispatch<typeof store.dispatch>();
-    let initialValues: { email: string, password:string} ={
+    let initialValues: { email: string, password: string } = {
         email: '',
         password: '',
     }
@@ -23,20 +30,20 @@ export default function Login() {
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema,
-        onSubmit: (values)=>{ 
-            dispatch(getLogin(values)).then((resp) =>{
+        onSubmit: (values) => {
+            dispatch(getLogin(values)).then((resp) => {
                 console.log('form login', resp?.payload?.response?.data?.error);
-                if(resp?.payload?.data?.message === 'success'){ 
+                if (resp?.payload?.data?.message === 'success') {
                     toast.success('Successfully Login!')
-                }else {
+                } else {
                     toast.error(resp?.payload?.response?.data?.error)
                 }
-            }).catch((error)=>{console.log(error)})
+            }).catch((error) => { console.log(error) })
         }
     });
     return (
         <Container maxWidth="md" className='login-container'>
-            <Paper elevation={8} sx={{ margin: "auto", textAlign:"end" }}>
+            <Paper elevation={8} sx={{ margin: "auto", textAlign: "end" }}>
                 <Typography
                     sx={{
                         color: '#1976d2',
@@ -47,7 +54,7 @@ export default function Login() {
                 </Typography>
                 <Box
                     component="form"
-                    sx={{ padding: '20px', paddingTop:"0px" }}
+                    sx={{ padding: '20px', paddingTop: "0px" }}
                     noValidate
                     onSubmit={formik.handleSubmit}
                 >
@@ -62,15 +69,35 @@ export default function Login() {
                         helperText={formik.touched.email && formik.errors.email}
                         sx={{ width: '100%', marginTop: '15px' }}
                     />
-                    <TextField
-                        id="password"
-                        name='password'
-                        label="Password"
-                        variant="outlined"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        sx={{ width: '100%', marginTop: '15px' }}
-                    />
+
+                    <FormControl sx={{ width: '100%', marginTop: '15px' }} variant="outlined">
+                        <InputLabel htmlFor="password">Password</InputLabel>
+                        <OutlinedInput
+                            id="password"
+                            name='password'
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label={
+                                            showPassword ? 'hide the password' : 'display the password'
+                                        }
+                                        onClick={handlePassowrdVisibility}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            label="Password"
+                        />
+                        {formik.touched.password && formik.errors.password && (
+                            <Typography color="error" variant="caption" sx={{ textAlign: "start", paddingLeft: "15px" }}>{formik.errors.password}</Typography>
+                        )}
+                    </FormControl>
                     <Button type='submit' variant="outlined" sx={{ marginTop: "15px" }}>login</Button>
                 </Box>
             </Paper>
