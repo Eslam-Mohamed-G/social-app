@@ -3,6 +3,7 @@ import { store } from '@/library/redux/store';
 import { getLogin } from '@/library/redux/userSlice';
 import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
@@ -13,8 +14,15 @@ export default function Login() {
         email: '',
         password: '',
     }
+
+    const validationSchema = Yup.object({
+        email: Yup.string().email("Invalid email format").required("Email is required"),
+        password: Yup.string().required('Password is required').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, 'Password must contain at least 8 characters, uppercase letter, lowercase letter, number, and special symbol.'),
+    });
+
     const formik = useFormik({
         initialValues: initialValues,
+        validationSchema,
         onSubmit: (values)=>{ 
             dispatch(getLogin(values)).then((resp) =>{
                 console.log('form login', resp?.payload?.response?.data?.error);
@@ -50,6 +58,8 @@ export default function Login() {
                         variant="outlined"
                         value={formik.values.email}
                         onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
                         sx={{ width: '100%', marginTop: '15px' }}
                     />
                     <TextField
