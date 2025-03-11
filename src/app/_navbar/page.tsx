@@ -9,20 +9,21 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-const pages = ['Home', 'Posts', 'Profile'];
-const settings = ['Profile', 'Register', 'Login', 'Logout'];
+const pages = ['Home', 'Posts'];
+const settings = {
+    loggedIn: ['Profile', 'Logout'],
+    notLoggedIn: ['Register', 'Login']
+};
 
 function Navbar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const data = useSelector((state:any) => state.user)
-    console.log(data);
+    const { isLoggedIn } = useSelector((state: any) => state.user)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -88,7 +89,7 @@ function Navbar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            {pages.map((page) => (
+                            {isLoggedIn && pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Link href={page.toLowerCase() === 'home' ? '/' : `/${page.toLowerCase()}`} style={{ textAlign: 'center' }} passHref>
                                         <Typography textAlign="center" color="inherit">{page}</Typography>
@@ -97,21 +98,23 @@ function Navbar() {
                             ))}
                         </Menu>
                     </Box>
+
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Link 
-                                key={page} 
-                                href={page.toLowerCase() === 'home' ? '/' : `/${page.toLowerCase()}`} 
-                                style={{ textDecoration: 'none', color: 'inherit', marginRight: '15px'}}
+                        {isLoggedIn && pages.map((page) => (
+                            <Link
+                                key={page}
+                                href={page.toLowerCase() === 'home' ? '/' : `/${page.toLowerCase()}`}
+                                style={{ textDecoration: 'none', color: 'inherit', marginRight: '15px' }}
                             >
                                 {page}
                             </Link>
                         ))}
                     </Box>
+
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt="Remy Sharp" src="" />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -130,13 +133,24 @@ function Navbar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Link href={`/${setting.toLowerCase()}`} style={{ textAlign: 'center' }} passHref>
-                                        <Typography textAlign="center" color="inherit">{setting}</Typography>
-                                    </Link>
-                                </MenuItem>
-                            ))}
+                            {isLoggedIn
+                                ?
+                                settings.loggedIn.map((setting) => (
+                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                        <Link href={`/${setting.toLowerCase()}`} style={{ textAlign: 'center' }} passHref>
+                                            <Typography textAlign="center" color="inherit">{setting}</Typography>
+                                        </Link>
+                                    </MenuItem>
+                                ))
+                                :
+                                settings.notLoggedIn.map((setting) => (
+                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                        <Link href={`/${setting.toLowerCase()}`} style={{ textAlign: 'center' }} passHref>
+                                            <Typography textAlign="center" color="inherit">{setting}</Typography>
+                                        </Link>
+                                    </MenuItem>
+                                ))
+                            }
                         </Menu>
                     </Box>
                 </Toolbar>
