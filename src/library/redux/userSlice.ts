@@ -1,11 +1,8 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Cookies from 'js-cookie';
 interface UserState {
-    userToken: null | string,
-    isError: boolean,
-    isLoading: boolean,
-    error: null | string,
-    useData: null | string
+    isLoggedIn : boolean,
 };
 
 export const getLogin = createAsyncThunk(
@@ -22,36 +19,17 @@ export const getLogin = createAsyncThunk(
     });
 
 const initialState: UserState = {
-    userToken: null,
-    isError: false,
-    isLoading: false,
-    error: null,
-    useData: null
+    isLoggedIn: !!Cookies.get("token"),
 }
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        logOut: (state, action: PayloadAction<UserState>) => {
-            state.userToken = null;
+        setUserIsLoggedIn: (state, action) =>{
+            state.isLoggedIn = action.payload
         }
     },
-    extraReducers: (builder) => {
-        builder.addCase(getLogin.pending, (state, action) => {
-            state.isLoading = true
-            state.isError = false
-        })
-        builder.addCase(getLogin.fulfilled, (state, action) => {
-            state.isLoading = false
-            state.isError = false
-            state.userToken = action?.payload?.data?.token
-        })
-        builder.addCase(getLogin.rejected, (state, action) => {
-            state.isLoading = false
-            state.isError = false
-        })
-    }
 });
 
-export const { logOut } = userSlice.actions;
+export const { setUserIsLoggedIn } = userSlice.actions;
 export default userSlice.reducer;

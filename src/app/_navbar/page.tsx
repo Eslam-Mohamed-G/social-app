@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
 const pages = ['Home', 'Posts', 'Profile'];
 const settings = ['Profile', 'Register', 'Login', 'Logout'];
@@ -20,6 +21,8 @@ const settings = ['Profile', 'Register', 'Login', 'Logout'];
 function Navbar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const data = useSelector((state:any) => state.user)
+    console.log(data);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);

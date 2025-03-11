@@ -1,6 +1,6 @@
 "use client"
 import { store } from '@/library/redux/store';
-import { getLogin } from '@/library/redux/userSlice';
+import { getLogin, setUserIsLoggedIn } from '@/library/redux/userSlice';
 import { Box, Button, Container, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -25,6 +25,7 @@ export default function Login() {
     const handlePassowrdVisibility = () => {
     setShowPassword((prev) => !prev)
     };
+
     let dispatch = useDispatch<typeof store.dispatch>();
     let initialValues: LoginDataType = {
         email: '',
@@ -42,7 +43,8 @@ export default function Login() {
             const response = await axios.post("https://linked-posts.routemisr.com/users/signin", values);
             console.log(response);
             if(response?.data?.message === "success") {
-                Cookies.set("token", response.data.token)
+                Cookies.set("token", response.data.token);
+                dispatch(setUserIsLoggedIn(true))
                 router.push("/")
             } else {
                 toast.error(response?.data?.error)
