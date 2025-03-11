@@ -23,8 +23,11 @@ const settings = {
 function Navbar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const [isClient, setIsClient] = React.useState(false);
     const { isLoggedIn } = useSelector((state: any) => state.user)
-
+    React.useEffect(() => {
+        setIsClient(true);
+    }, []);
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -89,7 +92,7 @@ function Navbar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            {isLoggedIn && pages.map((page) => (
+                            {isClient && isLoggedIn && pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Link href={page.toLowerCase() === 'home' ? '/' : `/${page.toLowerCase()}`} style={{ textAlign: 'center' }} passHref>
                                         <Typography textAlign="center" color="inherit">{page}</Typography>
@@ -100,7 +103,7 @@ function Navbar() {
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {isLoggedIn && pages.map((page) => (
+                        {isClient && isLoggedIn && pages.map((page) => (
                             <Link
                                 key={page}
                                 href={page.toLowerCase() === 'home' ? '/' : `/${page.toLowerCase()}`}
@@ -133,7 +136,7 @@ function Navbar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {isLoggedIn
+                            {isClient && isLoggedIn
                                 ?
                                 settings.loggedIn.map((setting) => (
                                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
