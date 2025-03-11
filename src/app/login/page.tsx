@@ -60,16 +60,6 @@ export default function Login() {
         initialValues: initialValues,
         validationSchema,
         onSubmit,
-        // onSubmit: (values) => {
-        //     dispatch(getLogin(values)).then((resp) => {
-        //         console.log('form login', resp?.payload?.response?.data?.error);
-        //         if (resp?.payload?.data?.message === 'success') {
-        //             toast.success('Successfully Login!')
-        //         } else {
-        //             toast.error(resp?.payload?.response?.data?.error)
-        //         }
-        //     }).catch((error) => { console.log(error) })
-        // }
     });
     return (
         <Container maxWidth="md" className='login-container'>
