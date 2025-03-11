@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface LoginDataType {
     email: string;
@@ -41,6 +42,7 @@ export default function Login() {
             const response = await axios.post("https://linked-posts.routemisr.com/users/signin", values);
             console.log(response);
             if(response?.data?.message === "success") {
+                Cookies.set("token", response.data.token)
                 router.push("/")
             } else {
                 toast.error(response?.data?.error)
