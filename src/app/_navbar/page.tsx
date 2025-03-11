@@ -13,10 +13,14 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { setUserIsLoggedIn } from '@/library/redux/userSlice';
+import { useRouter } from 'next/navigation';
 
 const pages = ['Home', 'Posts'];
 const settings = {
-    loggedIn: ['Profile', 'Logout'],
+    loggedIn: ['Profile'],
     notLoggedIn: ['Register', 'Login']
 };
 
@@ -41,6 +45,14 @@ function Navbar() {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const dispatch = useDispatch();
+    const router = useRouter();
+    function Logout() {
+        Cookies.remove("token");
+        dispatch(setUserIsLoggedIn(false));
+        router.push("/login");
     };
 
     return (
@@ -140,13 +152,18 @@ function Navbar() {
                         >
                             {isClient && isLoggedIn
                                 ?
-                                settings.loggedIn.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Link href={`/${setting.toLowerCase()}`} style={{ textAlign: 'center' }} passHref>
-                                            <Typography textAlign="center" color="inherit">{setting}</Typography>
-                                        </Link>
+                                [
+                                    ...settings.loggedIn.map((setting) => (
+                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                            <Link href={`/${setting.toLowerCase()}`} style={{ textAlign: 'center' }} passHref>
+                                                <Typography textAlign="center" color="inherit">{setting}</Typography>
+                                            </Link>
+                                        </MenuItem>
+                                    )),
+                                    <MenuItem key="logout" onClick={() => { handleCloseUserMenu(); Logout() }}>
+                                        <Typography textAlign="center" color="inherit">Logout</Typography>
                                     </MenuItem>
-                                ))
+                                ]
                                 :
                                 settings.notLoggedIn.map((setting) => (
                                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
