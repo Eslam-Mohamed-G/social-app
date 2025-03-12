@@ -46,7 +46,7 @@ export default function Post({post}: {post: PostsI}) {
                 image="/static/images/cards/paella.jpg"
                 alt="Paella dish"
             />
-            <CardActions disableSpacing>
+            <CardActions disableSpacing sx={{justifyContent:"end"}}>
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>
