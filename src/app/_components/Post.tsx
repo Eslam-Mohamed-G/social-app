@@ -11,11 +11,17 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import ForumIcon from '@mui/icons-material/Forum';
+import CommentBankIcon from '@mui/icons-material/CommentBank';
 import { PostsI } from '@/interfaces/Posts';
 import Box from '@mui/material/Box';
 
 export default function Post({ post }: { post: PostsI }) {
+    const formatTime = (dataString: string) =>{
+        const date = new Date(dataString)
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`
+    }
 
     return (
         <Card>
@@ -29,7 +35,7 @@ export default function Post({ post }: { post: PostsI }) {
                     </IconButton>
                 }
                 title={post.user.name}
-                subheader={post.createdAt}
+                subheader={`${post.createdAt.split("T")[0]} ${formatTime(post.createdAt)}` }
                 slotProps={{
                     title: { color: "#1976d2" },
                     subheader: { color: "black" }
@@ -58,11 +64,11 @@ export default function Post({ post }: { post: PostsI }) {
                     <ShareIcon />
                 </IconButton>
 
-                <Box>
-                    <IconButton sx={{ padding: "0px" }} aria-label="comment">
-                        <ForumIcon />
+                <Box sx={{display:"flex", alignItems:"center" }}>
+                    <IconButton aria-label="comment">
+                        <CommentBankIcon />
                     </IconButton>
-                    <Typography sx={{ fontSize: "12px", textAlign: "center", padding: "0" }}>{post.comments.length}</Typography>
+                    <Typography sx={{ fontSize: "12px" }}>{post.comments.length}</Typography>
                 </Box>
 
                 <Box sx={{ flexGrow: "1", textAlign: "end", justifyContent: "end" }}>
