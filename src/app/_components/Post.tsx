@@ -13,49 +13,63 @@ import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ForumIcon from '@mui/icons-material/Forum';
 import { PostsI } from '@/interfaces/Posts';
+import Box from '@mui/material/Box';
 
-export default function Post({post}: {post: PostsI}) {
+export default function Post({ post }: { post: PostsI }) {
 
     return (
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
-                    </Avatar>
+                    <Avatar src={post.user.photo} alt={post.user.name} sx={{ bgcolor: red[500] }} aria-label="recipe" />
                 }
                 action={
                     <IconButton aria-label="settings">
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
+                title={post.user.name}
+                subheader={post.createdAt}
+                slotProps={{
+                    title: { color: "#1976d2" },
+                    subheader: { color: "black" }
+                }}
             />
 
-            <CardContent>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
-                </Typography>
-            </CardContent>
-            <CardMedia
-                component="img"
-                height="194"
-                image="/static/images/cards/paella.jpg"
-                alt="Paella dish"
-            />
-            <CardActions disableSpacing sx={{justifyContent:"end"}}>
+            {post?.body &&
+                <CardContent>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {post.body}
+                    </Typography>
+                </CardContent>
+            }
+
+            {post?.image &&
+                <CardMedia
+                    component="img"
+                    height="194"
+                    image={post?.image}
+                    alt="Image"
+                />
+            }
+
+            <CardActions disableSpacing sx={{ justifyContent: "end", gap: "20px" }}>
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>
-                <IconButton aria-label="comment">
-                    <ForumIcon />
-                </IconButton>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
+
+                <Box>
+                    <IconButton sx={{ padding: "0px" }} aria-label="comment">
+                        <ForumIcon />
+                    </IconButton>
+                    <Typography sx={{ fontSize: "12px", textAlign: "center", padding: "0" }}>{post.comments.length}</Typography>
+                </Box>
+
+                <Box sx={{ flexGrow: "1", textAlign: "end", justifyContent: "end" }}>
+                    <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                    </IconButton>
+                </Box>
             </CardActions>
         </Card>
     );
