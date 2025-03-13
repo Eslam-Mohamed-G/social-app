@@ -15,6 +15,7 @@ import CommentBankIcon from '@mui/icons-material/CommentBank';
 import { PostsI } from '@/interfaces/Posts';
 import Box from '@mui/material/Box';
 import Comment from './Comment';
+import Link from 'next/link';
 
 export default function Post({ post }: { post: PostsI }) {
     const formatTime = (dataString: string) => {
@@ -66,9 +67,11 @@ export default function Post({ post }: { post: PostsI }) {
                 </IconButton>
 
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <IconButton aria-label="comment">
-                        <CommentBankIcon />
-                    </IconButton>
+                    <Link href={"/posts/" + post._id}>
+                        <IconButton aria-label="comment">
+                            <CommentBankIcon />
+                        </IconButton>
+                    </Link>
                     <Typography sx={{ fontSize: "12px" }}>{post.comments.length}</Typography>
                 </Box>
 
