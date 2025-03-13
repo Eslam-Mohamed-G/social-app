@@ -16,7 +16,7 @@ import { PostsI } from '@/interfaces/Posts';
 import Box from '@mui/material/Box';
 
 export default function Post({ post }: { post: PostsI }) {
-    const formatTime = (dataString: string) =>{
+    const formatTime = (dataString: string) => {
         const date = new Date(dataString)
         const hours = date.getHours().toString().padStart(2, '0');
         const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -35,7 +35,7 @@ export default function Post({ post }: { post: PostsI }) {
                     </IconButton>
                 }
                 title={post.user.name}
-                subheader={`${post.createdAt.split("T")[0]} ${formatTime(post.createdAt)}` }
+                subheader={`${post.createdAt.split("T")[0]} ${formatTime(post.createdAt)}`}
                 slotProps={{
                     title: { color: "#1976d2" },
                     subheader: { color: "black" }
