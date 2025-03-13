@@ -89,9 +89,9 @@ export default function Post({ post }: { post: PostsI }) {
                         </IconButton>
                     }
                     title={
-                        <Box sx={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
-                            <Typography sx={{fontSize:"14px"}}>{post.comments[0].commentCreator.name}</Typography>
-                            <Typography sx={{fontSize:"12px"}}>{`${formatTime(post.comments[0].createdAt)} | ${post.comments[0].createdAt.split("T")[0]}`}</Typography>
+                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                            <Typography sx={{ fontSize: "14px" }}>{post.comments[0].commentCreator.name}</Typography>
+                            <Typography sx={{ fontSize: "12px" }}>{`${formatTime(post.comments[0].createdAt)} | ${post.comments[0].createdAt.split("T")[0]}`}</Typography>
                         </Box>
                     }
                     subheader={
