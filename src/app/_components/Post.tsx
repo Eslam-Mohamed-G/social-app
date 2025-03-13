@@ -14,6 +14,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CommentBankIcon from '@mui/icons-material/CommentBank';
 import { PostsI } from '@/interfaces/Posts';
 import Box from '@mui/material/Box';
+import Comment from './Comment';
 
 export default function Post({ post }: { post: PostsI }) {
     const formatTime = (dataString: string) => {
@@ -78,31 +79,7 @@ export default function Post({ post }: { post: PostsI }) {
                 </Box>
             </CardActions>
             {/* comment */}
-            <Box bgcolor={"#eee"} borderTop={"1px solid #ccc"}>
-                <CardHeader
-                    avatar={
-                        <Avatar src={post.comments[0].commentCreator.photo} alt={post.comments[0].commentCreator.name} sx={{ bgcolor: red[500] }} aria-label="recipe" />
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
-                    }
-                    title={
-                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                            <Typography sx={{ fontSize: "14px" }}>{post.comments[0].commentCreator.name}</Typography>
-                            <Typography sx={{ fontSize: "12px" }}>{`${formatTime(post.comments[0].createdAt)} | ${post.comments[0].createdAt.split("T")[0]}`}</Typography>
-                        </Box>
-                    }
-                    subheader={
-                        <Typography>{post.comments[0].content}</Typography>
-                    }
-                    slotProps={{
-                        title: { color: "#1976d2" },
-                        subheader: { color: "black" }
-                    }}
-                />
-            </Box>
+            <Comment comment={post.comments[0]}/>
         </Card>
     );
 }
