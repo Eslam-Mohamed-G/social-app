@@ -5,10 +5,11 @@ import { Container, Stack, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Post from '../_components/Post';
+import { AppDispatch, RootState } from '@/library/redux/store';
 
 export default function Posts() {
-    const dispatch = useDispatch<any>()
-    const { posts }: { posts: PostsI[] } = useSelector((state: any) => state.posts)
+    const dispatch = useDispatch<AppDispatch>()
+    const { posts }: { posts: PostsI[] } = useSelector((state: RootState) => state.posts)
     console.log(posts);
 
     useEffect(() => { 

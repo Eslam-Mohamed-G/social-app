@@ -17,6 +17,7 @@ import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { setUserIsLoggedIn } from '@/library/redux/userSlice';
 import { useRouter } from 'next/navigation';
+import { RootState } from '@/library/redux/store';
 
 const pages = ['Home', 'Posts'];
 const settings = {
@@ -28,7 +29,7 @@ function Navbar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [isClient, setIsClient] = React.useState(false);
-    const { isLoggedIn } = useSelector((state: any) => state.user)
+    const { isLoggedIn } = useSelector((state: RootState) => state.user)
     React.useEffect(() => {
         setIsClient(true);
     }, []);
