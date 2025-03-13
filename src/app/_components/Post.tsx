@@ -17,7 +17,7 @@ import Box from '@mui/material/Box';
 import Comment from './Comment';
 import Link from 'next/link';
 
-export default function Post({ post }: { post: PostsI }) {
+export default function Post({ post, commentLimit }: { post: PostsI, commentLimit?:number }) {
     const formatTime = (dataString: string) => {
         const date = new Date(dataString)
         const hours = date.getHours().toString().padStart(2, '0');
@@ -82,7 +82,7 @@ export default function Post({ post }: { post: PostsI }) {
                 </Box>
             </CardActions>
             {/* comment */}
-            <Comment comment={post.comments[0]}/>
+            { post.comments.slice(0, commentLimit).map((comment)=>(<Comment comment={comment}/>))}
         </Card>
     );
 }

@@ -20,7 +20,7 @@ export default function Posts() {
             <Typography variant='h5' color='initial'>Posts</Typography>
             <Stack spacing={3} marginTop={3}>
                 {posts.map((post)=>(
-                    <Post post={post} key={post._id}/>
+                    <Post post={post} commentLimit={1} key={post._id}/>
                 ))}
             </Stack>
         </Container>
