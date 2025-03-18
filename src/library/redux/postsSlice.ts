@@ -30,7 +30,8 @@ export const getSinglePost = createAsyncThunk("posts/getSinglePost", async (post
 });
 const initialState:PostsSliceInitState = {
     posts: [],
-    post: null
+    post: null,
+    postIsLoading: true,
 }
 
 const postsSlice = createSlice({
@@ -43,6 +44,15 @@ const postsSlice = createSlice({
         })
         builder.addCase(getSinglePost.fulfilled, (state, action) =>{
             state.post = action.payload
+            state.postIsLoading = false
+        })
+        builder.addCase(getSinglePost.pending, (state, action) =>{
+            if(state.post?._id != action.meta.arg){
+                state.postIsLoading = true
+            }
+        })
+        builder.addCase(getSinglePost.rejected, (state, action) =>{
+            state.postIsLoading = false
         })
     },
 });
